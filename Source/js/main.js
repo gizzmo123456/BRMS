@@ -99,6 +99,7 @@ main = function(canvasId, intervals = 33.333){
         
         renderer.DrawRect( new Rect( 40, 10, 4, 4), "red", "5", "blue" )
         renderer.DrawEllipes( new Rect( 40, 10, 4, 6), 0, "red", "5", "blue" );
+        renderer.DrawText( new Rect( 40, 10, 40, 6), "Helloo World", "gray" );
         
         return;
         drawRect(ctx, uiRect, "black", "3" );

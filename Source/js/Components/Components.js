@@ -96,7 +96,13 @@ class CanvasRenderer {
 
     DrawText(rect, text, color="black", fontSize="24px", font="Arial")
     {
+        var scale = this.canvasSettings.GetPixels( rect.scale );
+        var position = this.canvasSettings.GetPixels( rect.position );
+        //position.y += this.canvasSettings.pixelsToUnits; 
 
+        this.canvas.fillStyle = color;
+        this.canvas.font = fontSize + " " + font;
+        this.canvas.fillText( text, position.x, position.y, scale.x );
     }
 
 }
