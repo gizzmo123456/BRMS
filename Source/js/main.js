@@ -51,63 +51,18 @@ main = function(canvasId, intervals = 33.333){
 
     var levelRect = new Rect(1, 2, gameManager.mapSize.x, gameManager.mapSize.y);
 
-    drawRect = function( canvas, rect, borderColor="black", borderWidth="1", fillColor="white" )
-    {
-        /**
-         * draws rect
-         * colour:      colour of rect
-         * position:    position in units
-         * scale:       scale in units
-         */
-
-        position = canvasSettings.GetPixels( rect.position );
-        scale = canvasSettings.GetPixels( rect.scale );
-
-        canvas.beginPath();
-        canvas.lineWidth = borderWidth;
-
-        // draw filled rect
-        canvas.fillStyle = fillColor;
-        canvas.rect(position.x, position.y, scale.x, scale.y);
-        canvas.fill();
-        
-        // add a boarder to the rect
-        canvas.strokeStyle = borderColor;
-        canvas.stroke();
-        
-    }
-
-    drawText = function( canvas, rect, text, color="black", fontSize="24px", font="Arial" )
-    {
-
-        var scale = canvasSettings.GetPixels( rect.scale );
-        var position = canvasSettings.GetPixels( rect.position );
-        position.y += canvasSettings.GetPixels( {x: 0, y: 1} ).y;     // not sure why but text cells seem to be out by one cell on the y axis
-
-        canvas.fillStyle = color;
-        canvas.font = fontSize + " " + font;
-        canvas.fillText( text, position.x, position.y, scale.x );
-
-    }
-
-
     Update = function()
     {
         inputs.TickInputs()
 
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
-        
-        renderer.DrawRect( new Rect( 40, 10, 4, 4), "red", "5", "blue" )
-        renderer.DrawEllipes( new Rect( 40, 10, 4, 6), 0, "red", "5", "blue" );
-        renderer.DrawText( new Rect( 40, 10, 40, 6), "Helloo World", "gray" );
-        
-        return;
-        drawRect(ctx, uiRect, "black", "3" );
-        drawRect(ctx, levelRect, "black", "3" );
 
-        drawText(ctx, uiRectTime, `Time: ${gameManager.GetTimeString()}`, "black", "16px");
-        drawText(ctx, uiRectMines, `Mines: ${gameManager.mineCount}` , "black", "16px");
-        drawText(ctx, uiRectCells, `Remaining cells: ${gameManager.remainingTiles}`, "black", "16px");
+        renderer.DrawRect( uiRect, "white", "black", "3" );
+        renderer.DrawRect( levelRect, "white", "black", "3" );
+
+        renderer.DrawText( uiRectTime, `Time: ${gameManager.GetTimeString()}`, "black", "16px");
+        renderer.DrawText( uiRectMines, `Mines: ${gameManager.mineCount}` , "black", "16px");
+        renderer.DrawText( uiRectCells, `Remaining cells: ${gameManager.remainingTiles}`, "black", "16px");
            
         for (var i = 0; i < gameManager.map.length; i++)
         {
@@ -131,7 +86,7 @@ main = function(canvasId, intervals = 33.333){
             if ( gameManager.cover[i] > 0 )
             {
                 color = gameManager.cover[i] == 1 ? cellColor : gameManager.cover[i] == 2 ? "orange" : "red";
-                drawRect(ctx, cellRect, "black", "2", color);
+                renderer.DrawRect( cellRect, color, "black", "2");
             }
             else
             {
@@ -152,7 +107,7 @@ main = function(canvasId, intervals = 33.333){
                 color = `rgb(${r}, ${g}, ${b})`; 
                 document.getElementById("debug5").innerHTML = mineCount +" / "+ maxMineCount +" = "+ minePrecentage +" || "+ color;// minePrecentage;//color;
                 if ( mineCount < 0 ) mineCount = "*";
-                drawText(ctx, cellRect, mineCount, color, "18px");
+                renderer.DrawText( cellRect, mineCount, color, "18px");
 
             } 
 
