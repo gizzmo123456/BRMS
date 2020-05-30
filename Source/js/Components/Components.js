@@ -71,10 +71,14 @@ class CanvasRenderer {
         //
 
         // find the x/y radius based on the rect supplied
+
+        var position = this.canvasSettings.GetPixels( rect.position );
+        var scale = this.canvasSettings.GetPixels( rect.scale );
+
         var xRadius, yRadius;
 
-        var xRadius = rect.scale.x / 2.0;
-        var yRadius = rect.scale.y / 2.0;
+        var xRadius = scale.x / 2.0;
+        var yRadius = scale.y / 2.0;
 
         // draw and fill the ellipes.
         this.canvas.beginPath();
@@ -82,7 +86,7 @@ class CanvasRenderer {
         this.canvas.lineWidth = borderWidth;
         this.canvas.fillStyle = fillColor;
 
-        this.canvas.ellipse( rect.position.x, rect.position.y, xRadius, yRadius, rotation, 0, 2*Math.PI )
+        this.canvas.ellipse( position.x, position.y, xRadius, yRadius, rotation, 0, 2*Math.PI )
         this.canvas.fill();
         
         this.canvas.strokeStyle = borderColor;
