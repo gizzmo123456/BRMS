@@ -97,7 +97,8 @@ main = function(canvasId, intervals = 33.333){
 
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
         
-        renderer.RenderEllipes( new Rect( 40 * canvasSettings.pixelsToUnits, 10* canvasSettings.pixelsToUnits, 4* canvasSettings.pixelsToUnits, 12* canvasSettings.pixelsToUnits), rot++/60.0 );
+        renderer.DrawRect( new Rect( 40, 10, 4, 4), "red", "5", "blue" )
+        //renderer.DrawEllipes( new Rect( 40 * canvasSettings.pixelsToUnits, 10* canvasSettings.pixelsToUnits, 4* canvasSettings.pixelsToUnits, 12* canvasSettings.pixelsToUnits), rot++/60.0 );
         
         return;
         drawRect(ctx, uiRect, "black", "3" );

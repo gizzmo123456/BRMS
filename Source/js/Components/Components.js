@@ -42,27 +42,27 @@ class CanvasRenderer {
 
     }
 
-    DrawRect(rect, borderColor="black", borderWidth="1", fillColor="white")
+    DrawRect(rect, fillColor="white", borderWidth="1", borderColor="black")
     {
 
-        var position = gameSettings.GetPixels( rect.position );
-        var scale = gameSettings.GetPixels( rect.scale );
+        var position = this.canvasSettings.GetPixels( rect.position );
+        var scale = this.canvasSettings.GetPixels( rect.scale );
 
-        canvas.beginPath();
-        canvas.lineWidth = borderWidth;
+        this.canvas.beginPath();
+        this.canvas.lineWidth = borderWidth;
 
         // draw filled rect
-        canvas.fillStyle = fillColor;
-        canvas.rect(position.x, position.y, scale.x, scale.y);
-        canvas.fill();
+        this.canvas.fillStyle = fillColor;
+        this.canvas.rect(position.x, position.y, scale.x, scale.y);
+        this.canvas.fill();
         
         // add a boarder to the rect
-        canvas.strokeStyle = borderColor;
-        canvas.stroke();
+        this.canvas.strokeStyle = borderColor;
+        this.canvas.stroke();
 
     }
 
-    DrawEllipes(rect, rotation=0, borderColor="black", borderWidth="1", fillColor="white")
+    DrawEllipes(rect, rotation=0, fillColor="white", borderColor="black", borderWidth="1" )
     {
         /**
          * Renders a Circel/oval to fill the rect
