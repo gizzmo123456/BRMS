@@ -57,6 +57,7 @@ main = function(canvasId, intervals = 33.333){
 
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
 
+        // Draw there game stats ect..
         renderer.DrawRect( uiRect, "white", "black", "3" );
         renderer.DrawRect( levelRect, "white", "black", "3" );
 
@@ -64,6 +65,7 @@ main = function(canvasId, intervals = 33.333){
         renderer.DrawText( uiRectMines, `Mines: ${gameManager.mineCount}` , "black", "16px");
         renderer.DrawText( uiRectCells, `Remaining cells: ${gameManager.remainingTiles}`, "black", "16px");
            
+        // Draw Game
         for (var i = 0; i < gameManager.map.length; i++)
         {
             

@@ -71,4 +71,46 @@ class CanvasRenderer {
         this.canvas.fillText( text, position.x, position.y, scale.x );
     }
 
+    DrawLine( startPosition, endPosition, color="black", borderWidth="1px" )
+    {
+        var sPos = this.canvasSettings.GetPixels( startPosition );
+        var ePos = this.canvasSettings.GetPixels( endPosition );
+
+        this.beginPath()
+        this.canvas.strokeStyle = color;
+        this.canvas.lineWidth = borderWidth;
+
+        this.canvas.moveTo( sPos.x, sPos.y );
+        this.canvas.lineTo( ePos.x, ePos.y);
+
+    }
+
+    DrawPolly( pointArray, color="white", borderColor="black", borderWidth="1" )
+    {
+
+        if ( pointArray.length < 3)
+            return; // not enought points to draw polly
+
+        this.canvas.beginPath()
+        this.canvas.lineWidth = borderWidth;
+        this.canvas.fillStyle = color;
+
+        // move to the first point, then we can loop the rest :)
+        var pos = this.canvasSettings.GetPixels( pointArray[0] );
+        this.canvas.moveTo( pos.x, pos.y );
+
+        for ( var i = 1; i < pointArray.length; i++ )
+        {
+            pos = this.canvasSettings.GetPixels( pointArray[i] );
+            this.canvas.lineTo( pos.x, pos.y)
+        }
+
+        this.canvas.closePath();
+        this.canvas.fill();
+
+        this.canvas.strokeStyle = borderColor;
+        this.canvas.stroke();
+
+
+    }
 }
