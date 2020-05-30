@@ -14,7 +14,7 @@ main = function(canvasId, intervals = 33.333){
 
     // Set up and config
 
-    var gameSettings = {
+    var canvasSettings = {
         canvasWidth: window.innerWidth - 15,
         canvasHeight: window.innerHeight - 100,
         pixelsToUnits: 25,
@@ -37,10 +37,11 @@ main = function(canvasId, intervals = 33.333){
     var updateTimer;
 
     var gameManager = new GameManager();
+    var renderer = new CanvasRenderer( ctx, canvasSettings );
     var inputs = new Input( cav );
 
-    cav.width = gameSettings.canvasWidth;
-    cav.height = gameSettings.canvasHeight;
+    cav.width = canvasSettings.canvasWidth;
+    cav.height = canvasSettings.canvasHeight;
 
     // TODO: these should proberly be rects by for now.
     var uiRect = new Rect(1, 0, gameManager.mapSize.x, 2);
@@ -59,8 +60,8 @@ main = function(canvasId, intervals = 33.333){
          * scale:       scale in units
          */
 
-        position = gameSettings.GetPixels( rect.position );
-        scale = gameSettings.GetPixels( rect.scale );
+        position = canvasSettings.GetPixels( rect.position );
+        scale = canvasSettings.GetPixels( rect.scale );
 
         canvas.beginPath();
         canvas.lineWidth = borderWidth;
@@ -79,9 +80,9 @@ main = function(canvasId, intervals = 33.333){
     drawText = function( canvas, rect, text, color="black", fontSize="24px", font="Arial" )
     {
 
-        var scale = gameSettings.GetPixels( rect.scale );
-        var position = gameSettings.GetPixels( rect.position );
-        position.y += gameSettings.GetPixels( {x: 0, y: 1} ).y;     // not sure why but text cells seem to be out by one cell on the y axis
+        var scale = canvasSettings.GetPixels( rect.scale );
+        var position = canvasSettings.GetPixels( rect.position );
+        position.y += canvasSettings.GetPixels( {x: 0, y: 1} ).y;     // not sure why but text cells seem to be out by one cell on the y axis
 
         canvas.fillStyle = color;
         canvas.font = fontSize + " " + font;
@@ -89,12 +90,16 @@ main = function(canvasId, intervals = 33.333){
 
     }
 
+    var rot = 0;
     Update = function()
     {
         inputs.TickInputs()
 
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
         
+        renderer.RenderEllipes( new Rect( 40 * canvasSettings.pixelsToUnits, 10* canvasSettings.pixelsToUnits, 4* canvasSettings.pixelsToUnits, 12* canvasSettings.pixelsToUnits), rot++/60.0 );
+        
+        return;
         drawRect(ctx, uiRect, "black", "3" );
         drawRect(ctx, levelRect, "black", "3" );
 
@@ -114,7 +119,7 @@ main = function(canvasId, intervals = 33.333){
             var cellRect = new Rect(posX, posY, 1, 1);
             var cellColor = "rgb(180, 180, 180)";
 
-            var mouseCurrentCell = gameSettings.GetUnits(inputs.GetMousePosition(), true);
+            var mouseCurrentCell = canvasSettings.GetUnits(inputs.GetMousePosition(), true);
 
             document.getElementById("debug2").innerHTML = "Mouse Current Cell X: "+ mouseCurrentCell.x +" Y: "+ mouseCurrentCell.y ;
 
@@ -180,7 +185,7 @@ main = function(canvasId, intervals = 33.333){
     {
         if ( !pressed )
         {
-            var mouseCurrentCell = gameSettings.GetUnits(inputs.GetMousePosition(), true);
+            var mouseCurrentCell = canvasSettings.GetUnits(inputs.GetMousePosition(), true);
             var currentLevelCell = {
                 x: mouseCurrentCell.x - levelRect.position.x,
                 y: mouseCurrentCell.y - levelRect.position.y
@@ -217,7 +222,7 @@ main = function(canvasId, intervals = 33.333){
     gameManager.stateChangeCallback.push( this.GameStateChanged );
     inputs.mousePressedCallback.push( this.MousePressed );
     updateTimer = setInterval( this.Update, intervals );
-    gameManager.NewGame(800, {x: 40, y: 20});
+    gameManager.NewGame(8, {x: 40, y: 20});
 
 }
 
