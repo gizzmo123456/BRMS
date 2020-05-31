@@ -159,36 +159,45 @@ class GameManager {
             if ( this.explored[ cellId ] || this.map[ cellId ] == -1 )      // stop exploring if already explorded
             {
                 return;
-            } 
-            else 
-            {
+            }
+            else if (this.map[ cellId ] > 0 && count < 2)
+            {   // Brach out, with a max depth of two map cells > 0
+                count++;
 
-                this.Uncover(cords.x, cords.y);
-                this.explored[cellId] = true;
-                
-                if ( this.map[ cellId ] > 0 )
-                {
-                    count++;
-                    if (count > 1)
-                        return;
-                }
+                this.__BranchEmptyCells(cords, cellId, direction, count);
 
-                // explor in the direction that we have not came from
-                if ( direction.x == 0)
-                {
-                    this.ClearEmptyCells( cords, {x: 1, y: 0}, count );
-                    this.ClearEmptyCells( cords, {x: -1, y: 0}, count );
-                }
-                else
-                {
-                    this.ClearEmptyCells( cords, {x: 0, y: 1}, count );
-                    this.ClearEmptyCells( cords, {x: 0, y: -1}, count );
-                }
+            }
+            else if ( this.map[ cellId ] == 0)
+            {   // Continue going forwards, branching out
+
+                this.__BranchEmptyCells(cords, cellId, direction, 0)
+
                 document.getElementById("debug6").innerHTML = "dir x: "+direction.x+" y: "+direction.y;
 
-                this.ClearEmptyCells( cords, direction, count );
+                this.ClearEmptyCells( cords, direction );
+
             }
         }
+    }
+
+    __BranchEmptyCells(cords, cellId, direction, count)
+    {
+
+        this.Uncover(cords.x, cords.y);
+        this.explored[cellId] = true;
+        
+        // explor in the direction that we have not came from
+        if ( direction.x == 0)
+        {
+            this.ClearEmptyCells( cords, {x: 1, y: 0}, count );
+            this.ClearEmptyCells( cords, {x: -1, y: 0}, count );
+        }
+        else
+        {
+            this.ClearEmptyCells( cords, {x: 0, y: 1}, count );
+            this.ClearEmptyCells( cords, {x: 0, y: -1}, count );
+        }
+
     }
 
     Uncover( cordX, cordY )

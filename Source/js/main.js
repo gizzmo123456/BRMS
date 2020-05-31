@@ -127,10 +127,6 @@ main = function(canvasId, fps = 30){
 
             break;
             case "new":
-                uiRect = new Rect(1, 0, gameManager.mapSize.x, 2);
-                uiRectTime = new Rect(gameManager.mapSize.x - 3 , -0.25, gameManager.mapSize.x, 2);
-                uiRectMines = new Rect(1.5, -0.25, gameManager.mapSize.x, 2);
-                uiRectCells = new Rect(1.5, 0.5, gameManager.mapSize.x, 2);
                 levelRect = new Rect(1, 2, gameManager.mapSize.x, gameManager.mapSize.y);
             break;
             case "start":
