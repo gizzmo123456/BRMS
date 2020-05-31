@@ -111,7 +111,14 @@ class Transform extends Rect{
         return true;
     }
 
-
+    ToLocal( position )
+    {
+        return {
+            x: position.x - this.position.x,
+            y: position.y - this.position.y
+        }
+    }
+    
     static DegToRad(deg)
     {
         return deg * Math.PI / 180.0;
@@ -120,14 +127,6 @@ class Transform extends Rect{
     static RadToDeg(rad)
     {
         return rad * 180.0 / Math.PI;
-    }
-
-    ToLocal( position )
-    {
-        return {
-            x: position.x - this.position.x,
-            y: position.y - this.position.y
-        }
     }
 
 }

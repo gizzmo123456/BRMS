@@ -48,20 +48,33 @@ main = function(canvasId, fps = 30){
     var hud = new HUD( 1, 0, 1, 1, 0, gameManager);
     var gameWindow = new GameWindow(1, 2, 1, 1, 0, gameManager, canvasSettings, inputs);
 
-    var levelRect = new Rect(1, 2, gameManager.mapSize.x, gameManager.mapSize.y);
+    var updateCallbacks = [
+        gameWindow.Update
+    ]
+    var renderCallbacks = [
+        hud.Render,
+        gameWindow.Render
+    ]
 
     Update = function()
     {
         inputs.TickInputs()
 
-        ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
-        
         gameWindow.Update( inputs );
 
+        ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
+        
         hud.Render( renderer );
         gameWindow.Render( renderer );
-
+        
         frameSync.Invoke( this.Update );
+
+        // i dont why but non of this works, i need anwsers!
+        //updateCallbacks.forEach( cb => { cb( inputs )} )
+        //for ( var i = 0; i < updateCallbacks.length; i++)
+        //    updateCallbacks[i]( inputs );
+        //for ( var i = 0; i < renderCallbacks.length; i++)
+        //    renderCallbacks[i]( renderer );
 
     }
 
@@ -76,7 +89,6 @@ main = function(canvasId, fps = 30){
 
             break;
             case "new":
-                levelRect = new Rect(1, 2, gameManager.mapSize.x, gameManager.mapSize.y);
             break;
             case "start":
                 
