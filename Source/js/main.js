@@ -46,6 +46,7 @@ main = function(canvasId, fps = 30){
 
     // setup game objects
     var hud = new HUD( 1, 0, 1, 1, 0, gameManager);
+    var gameWindow = new GameWindow(1, 2, 1, 1, 0, gameManager, canvasSettings, inputs);
 
     var levelRect = new Rect(1, 2, gameManager.mapSize.x, gameManager.mapSize.y);
 
@@ -56,61 +57,7 @@ main = function(canvasId, fps = 30){
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
         
         hud.Render( renderer );
-
-        // reset the transfrom, just untill we have add the grid to its own class
-        ctx.setTransform( 1, 0, 0, 1, 0, 0 );
-
-        renderer.DrawRect( levelRect, "white", "black", "3" );
-
-        // Draw Game
-        for (var i = 0; i < gameManager.map.length; i++)
-        {
-            
-            // draw covers over each cell 
-            
-            cords = gameManager.GetCords(i);
-            posX = cords.x + levelRect.position.x;
-            posY = cords.y + levelRect.position.y;
-            
-            var cellRect = new Rect(posX, posY, 1, 1);
-            var cellColor = "rgb(180, 180, 180)";
-
-            var mouseCurrentCell = canvasSettings.GetUnits(inputs.GetMousePosition(), true);
-
-            document.getElementById("debug2").innerHTML = "Mouse Current Cell X: "+ mouseCurrentCell.x +" Y: "+ mouseCurrentCell.y ;
-
-            if ( cellRect.contains( mouseCurrentCell ) )
-                cellColor = "rgb(220, 220, 220)";
-
-            if ( gameManager.cover[i] > 0 )
-            {
-                color = gameManager.cover[i] == 1 ? cellColor : gameManager.cover[i] == 2 ? "orange" : "red";
-                renderer.DrawRect( cellRect, color, "black", "2");
-            }
-            else
-            {
-                var mineCount = gameManager.map[i]; // -1 == BOOM!
-
-                if ( mineCount == 0) continue;
-
-                var maxMineCount = 8;
-                var minePrecentage = mineCount / maxMineCount;
-
-                var r, g, b;
-                var color;
-
-                r = Math.floor(255 * minePrecentage);
-                g = Math.floor(125 - (125 * minePrecentage));
-                b = Math.floor(255 - (255 * minePrecentage));
-                
-                color = `rgb(${r}, ${g}, ${b})`; 
-                document.getElementById("debug5").innerHTML = mineCount +" / "+ maxMineCount +" = "+ minePrecentage +" || "+ color;// minePrecentage;//color;
-                if ( mineCount < 0 ) mineCount = "*";
-                renderer.DrawText( cellRect, mineCount, color, "18px");
-
-            } 
-
-        }
+        gameWindow.Render( renderer );
 
         frameSync.Invoke( this.Update );
 

@@ -21,7 +21,7 @@ class HUD extends Transform
          * Object definition in local space.
          */
 
-        // Note: +1 x
+        // TODO: this needs to go into its own function,
         var uiRect = new Rect(0, 0, this.gameManager.mapSize.x, 2);
         var uiRectTime = new Rect(this.gameManager.mapSize.x - 4 , -0.25, this.gameManager.mapSize.x, 2);
         var uiRectMines = new Rect(0.5, -0.25, this.gameManager.mapSize.x, 2);
