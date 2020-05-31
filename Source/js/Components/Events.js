@@ -11,8 +11,6 @@ class Input
         this.frameMousePosition =   { x: 0, y: 0 };
         this.deltaMousePosition =   { x: 0, y: 0 };
 
-        console.log (canvas);
-
         canvas.addEventListener("mousemove", (e) => { this.__UpdateMousePosition(e);               } );
         canvas.addEventListener("mousedown", (e) => { this.__TriggerMouseDownCallback(e, true);     } );
         canvas.addEventListener("mouseup",   (e) => { this.__TriggerMouseDownCallback(e, false);   } );

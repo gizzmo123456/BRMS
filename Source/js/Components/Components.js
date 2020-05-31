@@ -118,7 +118,7 @@ class Transform extends Rect{
             y: position.y - this.position.y
         }
     }
-    
+
     static DegToRad(deg)
     {
         return deg * Math.PI / 180.0;

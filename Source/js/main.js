@@ -98,35 +98,10 @@ main = function(canvasId, fps = 30){
 
     MousePressed = function( pressed, button )
     {
-        if ( !pressed )
-        {
-            var mouseCurrentCell = canvasSettings.GetUnits(inputs.GetMousePosition(), true);
-            var currentLevelCell = {
-                x: mouseCurrentCell.x - levelRect.position.x,
-                y: mouseCurrentCell.y - levelRect.position.y
-            }
-
-            if (button == 0)
-            {
-                
-                document.getElementById("debug3").innerHTML = "Mouse Pressed Level Cell X: "+ currentLevelCell.x +" Y: "+ currentLevelCell.y ;
-
-                if ( currentLevelCell.x >= 0 && currentLevelCell.y >= 0 )
-                    gameManager.ClearEmptyCells( {x: currentLevelCell.x, y: currentLevelCell.y} );
-                    //gameManager.Uncover( currentLevelCell.x, currentLevelCell.y );
-
-            }
-            else if (button == 1 || button == 2)
-            {
-                
-                gameManager.NextCoverState( currentLevelCell.x, currentLevelCell.y );
-
-            }
-        }
-
+        gameWindow.MousePressed( pressed, button );
     }
 
-    ClearUpdate = function(intv)
+    ClearUpdate = function()
     {
 
         frameSync.Cancel();

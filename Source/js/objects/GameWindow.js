@@ -80,4 +80,31 @@ class GameWindow extends Transform
         }
     }
 
+    MousePressed( pressed, button )
+    {
+        if (!pressed)
+        {
+            var currentLevelCell =  {
+                x: this.mouseCurrentCell.x,
+                y: this.mouseCurrentCell.y
+            };
+
+            if (button == 0)
+            {
+                
+                document.getElementById("debug3").innerHTML = "Mouse Pressed Level Cell X: "+ currentLevelCell.x +" Y: "+ currentLevelCell.y ;
+
+                if ( currentLevelCell.x >= 0 && currentLevelCell.y >= 0 )
+                    this.gameManager.ClearEmptyCells( {x: currentLevelCell.x, y: currentLevelCell.y} );
+
+            }
+            else if (button == 1 || button == 2)
+            {
+                
+                this.gameManager.NextCoverState( currentLevelCell.x, currentLevelCell.y );
+
+            }
+        }
+    }
+
 }
