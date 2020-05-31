@@ -1,7 +1,7 @@
 // main.js
 
 
-main = function(canvasId, intervals = 33.333){  
+main = function(canvasId, fps = 30){  
     /**
      * App Entry point
      * 
@@ -37,6 +37,7 @@ main = function(canvasId, intervals = 33.333){
     var updateTimer;
 
     var gameManager = new GameManager();
+    var frameSync = new FrameSync( fps );
     var renderer = new CanvasRenderer( ctx, canvasSettings );
     var inputs = new Input( cav );
 
@@ -56,7 +57,7 @@ main = function(canvasId, intervals = 33.333){
         inputs.TickInputs()
 
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
-
+        
         // Draw there game stats ect..
         renderer.DrawRect( uiRect, "white", "black", "3" );
         renderer.DrawRect( levelRect, "white", "black", "3" );
@@ -114,6 +115,8 @@ main = function(canvasId, intervals = 33.333){
             } 
 
         }
+
+        frameSync.Invoke( this.Update );
 
     }
 
@@ -180,7 +183,7 @@ main = function(canvasId, intervals = 33.333){
 
     gameManager.stateChangeCallback.push( this.GameStateChanged );
     inputs.mousePressedCallback.push( this.MousePressed );
-    updateTimer = setInterval( this.Update, intervals );
+    frameSync.Invoke( this.Update );
     gameManager.NewGame(8, {x: 40, y: 20});
 
 }
