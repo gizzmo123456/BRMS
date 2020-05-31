@@ -65,10 +65,8 @@ class Transform extends Rect{
         this.rotation = deg;
     }
 
-    Update( )
-    {
-
-    }
+    Update( inputs )
+    { }
 
     Render( canvasRenderer )
     {

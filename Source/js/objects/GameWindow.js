@@ -19,7 +19,7 @@ class GameWindow extends Transform
 
     }
 
-    Update()
+    Update( inputs )
     {
 
     }
