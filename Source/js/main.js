@@ -36,19 +36,17 @@ main = function(canvasId, fps = 30){
     var ctx = cav.getContext("2d");
     var updateTimer;
 
+    cav.width = canvasSettings.canvasWidth;
+    cav.height = canvasSettings.canvasHeight;
+
+    // set up the main game compoents 
     var gameManager = new GameManager();
     var frameSync = new FrameSync( fps );
     var renderer = new CanvasRenderer( ctx, canvasSettings );
     var inputs = new Input( cav );
 
-    cav.width = canvasSettings.canvasWidth;
-    cav.height = canvasSettings.canvasHeight;
-
-    // TODO: these should proberly be rects by for now.
-    var uiRect = new Rect(1, 0, gameManager.mapSize.x, 2);
-    var uiRectTime = new Rect(gameManager.mapSize.x - 3 , -0.25, gameManager.mapSize.x, 2);
-    var uiRectMines = new Rect(1.5, -0.25, gameManager.mapSize.x, 2);
-    var uiRectCells = new Rect(1.5, 0.5, gameManager.mapSize.x, 2);
+    // setup game objects
+    var hud = new HUD( 1, 0, 1, 1, 0, gameManager);
 
     var levelRect = new Rect(1, 2, gameManager.mapSize.x, gameManager.mapSize.y);
 
@@ -58,14 +56,13 @@ main = function(canvasId, fps = 30){
 
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
         
-        // Draw there game stats ect..
-        renderer.DrawRect( uiRect, "white", "black", "3" );
+        hud.Render( renderer );
+
+        // reset the transfrom, just untill we have add the grid to its own class
+        ctx.setTransform( 1, 0, 0, 1, 0, 0 );
+
         renderer.DrawRect( levelRect, "white", "black", "3" );
 
-        renderer.DrawText( uiRectTime, `Time: ${gameManager.GetTimeString()}`, "black", "16px");
-        renderer.DrawText( uiRectMines, `Mines: ${gameManager.mineCount}` , "black", "16px");
-        renderer.DrawText( uiRectCells, `Remaining cells: ${gameManager.remainingTiles}`, "black", "16px");
-           
         // Draw Game
         for (var i = 0; i < gameManager.map.length; i++)
         {
@@ -184,7 +181,7 @@ main = function(canvasId, fps = 30){
     gameManager.stateChangeCallback.push( this.GameStateChanged );
     inputs.mousePressedCallback.push( this.MousePressed );
     frameSync.Invoke( this.Update );
-    gameManager.NewGame(8, {x: 40, y: 20});
+    gameManager.NewGame(80, {x: 40, y: 20});
 
 }
 
