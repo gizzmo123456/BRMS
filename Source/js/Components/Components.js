@@ -122,4 +122,12 @@ class Transform extends Rect{
         return rad * 180.0 / Math.PI;
     }
 
+    ToLocal( position )
+    {
+        return {
+            x: position.x - this.position.x,
+            y: position.y - this.position.y
+        }
+    }
+
 }

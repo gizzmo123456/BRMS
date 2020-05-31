@@ -2,7 +2,7 @@
 class GameWindow extends Transform
 {
 
-    constructor(posX, posY, scaleX, scaleY, rotation, gameManager, canvasSettings, inputs)
+    constructor(posX, posY, scaleX, scaleY, rotation, gameManager, canvasSettings)
     {
         /**
          *  Params:
@@ -15,12 +15,14 @@ class GameWindow extends Transform
 
         this.gameManager = gameManager;
         this.canvasSettings = canvasSettings;
-        this.inputs = inputs;
+        this.mouseCurrentCell = {x: 0, y: 0}
 
     }
 
     Update( inputs )
     {
+
+        this.mouseCurrentCell = this.ToLocal( this.canvasSettings.GetUnits( inputs.GetMousePosition(), true ) );
 
     }
 
@@ -42,13 +44,9 @@ class GameWindow extends Transform
             var cellRect = new Rect(cords.x, cords.y, 1, 1);
             var cellColor = "rgb(180, 180, 180)";
 
-            var mouseCurrentCell = this.canvasSettings.GetUnits( this.inputs.GetMousePosition(), true );
-            mouseCurrentCell.x -= this.position.x;
-            mouseCurrentCell.y -= this.position.y;
+            document.getElementById("debug2").innerHTML = "Mouse Current Cell X: "+ this.mouseCurrentCell.x +" Y: "+ this.mouseCurrentCell.y ;
 
-            document.getElementById("debug2").innerHTML = "Mouse Current Cell X: "+ mouseCurrentCell.x +" Y: "+ mouseCurrentCell.y ;
-
-            if ( cellRect.contains( mouseCurrentCell ) )
+            if ( cellRect.contains( this.mouseCurrentCell ) )
                 cellColor = "rgb(220, 220, 220)";
 
             if ( this.gameManager.cover[i] > 0 )

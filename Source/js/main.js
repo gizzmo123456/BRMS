@@ -56,6 +56,8 @@ main = function(canvasId, fps = 30){
 
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
         
+        gameWindow.Update( inputs );
+
         hud.Render( renderer );
         gameWindow.Render( renderer );
 
@@ -122,7 +124,7 @@ main = function(canvasId, fps = 30){
     gameManager.stateChangeCallback.push( this.GameStateChanged );
     inputs.mousePressedCallback.push( this.MousePressed );
     frameSync.Invoke( this.Update );
-    gameManager.NewGame(80, {x: 40, y: 20});
+    gameManager.NewGame(220, {x: 40, y: 20});
 
 }
 
