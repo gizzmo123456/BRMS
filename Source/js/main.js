@@ -34,7 +34,6 @@ main = function(canvasId, fps = 30){
 
     var cav = document.getElementById( canvasId );
     var ctx = cav.getContext("2d");
-    var updateTimer;
 
     cav.width = canvasSettings.canvasWidth;
     cav.height = canvasSettings.canvasHeight;
@@ -173,8 +172,7 @@ main = function(canvasId, fps = 30){
     ClearUpdate = function(intv)
     {
 
-        if (updateTimer)
-            clearInterval(updateTimer)
+        frameSync.Cancel();
 
     }
 
