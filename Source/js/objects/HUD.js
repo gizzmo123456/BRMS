@@ -34,7 +34,7 @@ class HUD extends Transform
 
         // TODO: this needs to go into its own function,
         
-        canvasRenderer.DrawRect( this.uiRect, "white", "black", "3" );
+        canvasRenderer.DrawRect( this.uiRect, "white", 3, "black" );
 
         canvasRenderer.DrawText( this.uiRectTime, `Time: ${this.gameManager.GetTimeString()}`, "black", "16px");
         canvasRenderer.DrawText( this.uiRectMines, `Mines: ${this.gameManager.mineCount}` , "black", "16px");

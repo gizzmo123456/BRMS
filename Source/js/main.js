@@ -45,6 +45,7 @@ main = function(canvasId, fps = 30){
     // setup game objects
     var hud = new HUD( 1, 0, 1, 1, 0, gameManager);
     var gameWindow = new GameWindow(1, 2, 1, 1, 0, gameManager, canvasSettings, inputs);
+    var charactor = new Charactor( 2, 3, 1, 1, 0);
 
     // TODO: Add Time Class
     var lastUpdateTime = 0;
@@ -60,7 +61,8 @@ main = function(canvasId, fps = 30){
 
     var renderCallbacks = [
         hud,
-        gameWindow
+        gameWindow,
+        charactor
     ]
 
     Update = function()
@@ -83,7 +85,7 @@ main = function(canvasId, fps = 30){
         // find the current fps
         currentFpsInterval += timeDelta;
         ++frameCount;
-        if ( currentFpsInterval > fpsIntervals)
+        if ( currentFpsInterval >= fpsIntervals)
         {
             var fps = frameCount / (currentFpsInterval / 1000.0);
 
@@ -93,7 +95,7 @@ main = function(canvasId, fps = 30){
 
             currentFpsInterval = frameCount = 0.00;
         }
-
+        
     }
 
     GameStateChanged = function( state )

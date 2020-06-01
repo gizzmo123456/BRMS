@@ -7,6 +7,7 @@ class Input
         this.mousePressedCallback = []  // function must have param bool down, int button id
         this.resizeCallbacks = []
         
+        
 
         // mouse positions in pixels
         this.currentMousePosition = { x: 0, y: 0 };

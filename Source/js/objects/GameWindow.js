@@ -31,7 +31,7 @@ class GameWindow extends Transform
 
         var levelRect = new Rect(0, 0, this.gameManager.mapSize.x, this.gameManager.mapSize.y);
 
-        renderer.DrawRect( levelRect, "white", "black", "3" );
+        renderer.DrawRect( levelRect, "white", 3, "black" );
 
         // Draw Game
         for (var i = 0; i < this.gameManager.map.length; i++)
@@ -50,7 +50,7 @@ class GameWindow extends Transform
             if ( this.gameManager.cover[i] > 0 )
             {
                 color = this.gameManager.cover[i] == 1 ? cellColor : this.gameManager.cover[i] == 2 ? "orange" : "red";
-                renderer.DrawRect( cellRect, color, "black", "2");
+                renderer.DrawRect( cellRect, color );
             }
             else
             {

@@ -7,7 +7,7 @@ class CanvasRenderer {
 
     }
 
-    DrawRect(rect, fillColor="white", borderWidth="1", borderColor="black")
+    DrawRect(rect, fillColor="white", borderWidth=1, borderColor="black")
     {
 
         var position = this.canvasSettings.GetPixels( rect.position );
@@ -71,18 +71,19 @@ class CanvasRenderer {
         this.canvas.fillText( text, position.x, position.y, scale.x );
     }
 
-    DrawLine( startPosition, endPosition, color="black", borderWidth="1px" )
+    DrawLine( startPosition, endPosition, color="black", width="1" )
     {
         var sPos = this.canvasSettings.GetPixels( startPosition );
         var ePos = this.canvasSettings.GetPixels( endPosition );
 
-        this.beginPath()
+        this.canvas.beginPath()
         this.canvas.strokeStyle = color;
-        this.canvas.lineWidth = borderWidth;
+        this.canvas.lineWidth = width;
 
         this.canvas.moveTo( sPos.x, sPos.y );
         this.canvas.lineTo( ePos.x, ePos.y);
 
+        this.canvas.stroke();
     }
 
     DrawPolly( pointArray, color="white", borderColor="black", borderWidth="1" )
