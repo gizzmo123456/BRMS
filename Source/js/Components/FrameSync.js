@@ -46,8 +46,9 @@ class FrameSync
 
         this.timerHandle = setTimeout( funct, syncTime );
 
-
-        document.getElementById("debugRenderTime").innerHTML = this.renderTime.toFixed(2) + " of " + this.deltaTime.toFixed(2);
+        Debug.Print("RenderTime", 
+                     this.renderTime.toFixed(2) + " of " + this.deltaTime.toFixed(2)
+                    )
 
     }
 

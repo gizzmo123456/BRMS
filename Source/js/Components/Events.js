@@ -28,8 +28,7 @@ class Input
         };
 
         var text = "MousePostion X: " + this.frameMousePosition.x +" Y: "+this.frameMousePosition.y+" Delta X: "+ this.deltaMousePosition.x +" Y: "+this.deltaMousePosition.y+" Down: "+this.mouseDown;
-        document.getElementById("debug").innerHTML = text;
-    
+        Debug.Print("MousePosition", text);
     }
 
     __UpdateMousePosition(event)

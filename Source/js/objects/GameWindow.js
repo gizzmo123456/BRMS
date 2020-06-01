@@ -89,8 +89,10 @@ class GameWindow extends Transform
 
             if (button == 0)
             {
+                Debug.Print("MousePressedPosition",
+                            "Mouse Pressed Level Cell X: "+ currentLevelCell.x +" Y: "+ currentLevelCell.y
+                           )
                 
-                document.getElementById("debug3").innerHTML = "Mouse Pressed Level Cell X: "+ currentLevelCell.x +" Y: "+ currentLevelCell.y ;
 
                 if ( currentLevelCell.x >= 0 && currentLevelCell.y >= 0 )
                     this.gameManager.ClearEmptyCells( {x: currentLevelCell.x, y: currentLevelCell.y} );

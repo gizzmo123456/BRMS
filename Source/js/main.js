@@ -38,7 +38,8 @@ main = function(canvasId, fps = 30){
     cav.width = canvasSettings.canvasWidth;
     cav.height = canvasSettings.canvasHeight;
 
-    // set up the main game compoents 
+    // set up the main game compoents
+    var debug = new Debug(); 
     var gameManager = new GameManager();
     var frameSync = new FrameSync( fps );
     var renderer = new CanvasRenderer( ctx, canvasSettings );
@@ -89,7 +90,10 @@ main = function(canvasId, fps = 30){
         {
             var fps = frameCount / (currentFpsInterval / 1000.0);
 
-            document.getElementById("debugRenderTime2").innerHTML = "FPS" + frameCount +" / "+ currentFpsInterval +" = " + fps;
+            Debug.Print("FPS counter", 
+                        "FPS" + frameCount +" / "+ currentFpsInterval +" = " + fps
+                       )
+
             currentFpsInterval = frameCount = 0.00;
         }
 

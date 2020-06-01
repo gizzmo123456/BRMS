@@ -171,9 +171,6 @@ class GameManager {
             {   // Continue going forwards, branching out
 
                 this.__BranchEmptyCells(cords, cellId, direction, 0)
-
-                document.getElementById("debug6").innerHTML = "dir x: "+direction.x+" y: "+direction.y;
-
                 this.ClearEmptyCells( cords, direction );
 
             }
