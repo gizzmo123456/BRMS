@@ -119,6 +119,19 @@ class Transform extends Rect{
         }
     }
 
+    ToLocalCell( position )
+    {
+        // Todo. make the max value available so we can clamp it! 
+        x = Math.min( 0, Math.floor(position.x - this.position.x) );
+        y = Math.min( 0, Math.floor(position.y - this.position.y) );
+
+        return {
+            x: x,
+            y: y
+        }
+        
+    }
+
     static DegToRad(deg)
     {
         return deg * Math.PI / 180.0;
