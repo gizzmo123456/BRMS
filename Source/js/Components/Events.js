@@ -12,9 +12,9 @@ class Input
         this.deltaMousePosition =   { x: 0, y: 0 };
 
         canvas.addEventListener("mousemove", (e) => { this.__UpdateMousePosition(e);               } );
-        canvas.addEventListener("mousedown", (e) => { this.__TriggerMouseDownCallback(e, true);     } );
+        canvas.addEventListener("mousedown", (e) => { this.__TriggerMouseDownCallback(e, true);    } );
         canvas.addEventListener("mouseup",   (e) => { this.__TriggerMouseDownCallback(e, false);   } );
-        canvas.addEventListener("mouseout",  (e) => { this.__TriggerMouseDownCallback(e, false);   } );
+        canvas.addEventListener("mouseout",  (e) => { this.__TriggerMouseDownCallback(e, false, true);   } );
     }
 
     TickInputs()
@@ -36,13 +36,14 @@ class Input
         this.currentMousePosition = { x: event.offsetX, y: event.offsetY }
     }
 
-    __TriggerMouseDownCallback( e, down )
+    __TriggerMouseDownCallback( e, down, out )
     {
 
+        var button = out ? -1 : e.button;
         this.mouseDown = down;
 
         for ( var i = 0; i < this.mousePressedCallback.length; i++ )
-            this.mousePressedCallback[i]( down, e.button );
+            this.mousePressedCallback[i]( down, button );
 
     }
 
