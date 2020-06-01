@@ -19,7 +19,7 @@ class GameWindow extends Transform
 
     }
 
-    Update( inputs )
+    Update( deltaTime, inputs )
     {
 
         this.mouseCurrentCell = this.ToLocal( this.canvasSettings.GetUnits( inputs.GetMousePosition(), true ) );

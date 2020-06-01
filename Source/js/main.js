@@ -70,11 +70,12 @@ main = function(canvasId, fps = 30){
 
         var updateTime = Date.now();
         var timeDelta = updateTime - lastUpdateTime;
+        var timeDeltaSec = timeDelta / 1000.0;
         lastUpdateTime = updateTime;
 
         inputs.TickInputs()
 
-        updateCallbacks.forEach( ucb => ucb.Update( inputs ) );
+        updateCallbacks.forEach( ucb => ucb.Update( timeDeltaSec, inputs ) );
 
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
         
