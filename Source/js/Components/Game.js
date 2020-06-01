@@ -242,10 +242,10 @@ class GameManager {
 
         if ( cellId >= 0 && cellId < this.cover.length && this.cover[cellId] != 0 )
         {
-            var nextState = this.cover[cellId] + 1;
+            var nextState = this.cover[cellId] - 1;
 
-            if ( nextState > 3)
-                nextState = 1;
+            if ( nextState < 1)
+                nextState = 3;
 
             this.cover[cellId] = nextState;
         }
