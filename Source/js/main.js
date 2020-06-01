@@ -48,6 +48,14 @@ main = function(canvasId, fps = 30){
     var hud = new HUD( 1, 0, 1, 1, 0, gameManager);
     var gameWindow = new GameWindow(1, 2, 1, 1, 0, gameManager, canvasSettings, inputs);
 
+    // TODO: Add Time Class
+    var lastUpdateTime = 0;
+
+    var frameCount = 0;
+    var fpsIntervals = 1000.00;
+    var currentFpsInterval = 0;
+
+    // update lists
     var updateCallbacks = [
         gameWindow
     ]
@@ -59,6 +67,11 @@ main = function(canvasId, fps = 30){
 
     Update = function()
     {
+
+        var updateTime = Date.now();
+        var timeDelta = updateTime - lastUpdateTime;
+        lastUpdateTime = updateTime;
+
         inputs.TickInputs()
 
         updateCallbacks.forEach( ucb => ucb.Update( inputs ) );
@@ -66,8 +79,19 @@ main = function(canvasId, fps = 30){
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
         
         renderCallbacks.forEach( rcb => rcb.Render( renderer ) )
-        
+
         frameSync.Invoke( this.Update );
+
+        // find the current fps
+        currentFpsInterval += timeDelta;
+        ++frameCount;
+        if ( currentFpsInterval > fpsIntervals)
+        {
+            var fps = frameCount / (currentFpsInterval / 1000.0);
+
+            document.getElementById("debugRenderTime2").innerHTML = "FPS" + frameCount +" / "+ currentFpsInterval +" = " + fps;
+            currentFpsInterval = frameCount = 0.00;
+        }
 
     }
 
