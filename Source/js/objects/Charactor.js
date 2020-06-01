@@ -44,7 +44,7 @@ class Charactor extends Transform
         this.position.y += moveVector.y * this.moveSpeed * deltaTime;
         this.rotation += rotation;
 
-        if (mag < 0.1)
+        if (mag < 0.05)
         {
             this.isMoving = false;
             this.position.x = this.moveToLocation.x;
