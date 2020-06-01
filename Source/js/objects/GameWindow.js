@@ -78,7 +78,7 @@ class GameWindow extends Transform
         }
     }
 
-    MousePressed( pressed, button )
+    MousePressed( pressed, button, position )
     {
         if (!pressed)
         {

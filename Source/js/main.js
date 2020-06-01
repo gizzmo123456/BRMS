@@ -113,9 +113,10 @@ main = function(canvasId, fps = 30){
         }
     }
 
-    MousePressed = function( pressed, button )
+    MousePressed = function( pressed, button, position )
     {
-        gameWindow.MousePressed( pressed, button );
+        gameWindow.MousePressed( pressed, button, position );
+        charactor.MousePressed( pressed, button, position );
     }
 
     ResizeWindow = function()

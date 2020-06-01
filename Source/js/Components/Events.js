@@ -4,7 +4,7 @@ class Input
     constructor( canvas )
     {
         this.mouseDown = false;
-        this.mousePressedCallback = []  // function must have param bool down, int button id
+        this.mousePressedCallback = []  // function must have param bool down, int button id, vector2 position (position of press not the frame position)
         this.resizeCallbacks = []
         
         
@@ -44,11 +44,12 @@ class Input
     __TriggerMouseDownCallback( e, down, out )
     {
 
+        var position = { x: e.offsetX, y: e.offsetY };
         var button = out ? -1 : e.button;
         this.mouseDown = down;
 
         for ( var i = 0; i < this.mousePressedCallback.length; i++ )
-            this.mousePressedCallback[i]( down, button );
+            this.mousePressedCallback[i]( down, button, position );
 
     }
 
