@@ -49,32 +49,25 @@ main = function(canvasId, fps = 30){
     var gameWindow = new GameWindow(1, 2, 1, 1, 0, gameManager, canvasSettings, inputs);
 
     var updateCallbacks = [
-        gameWindow.Update
+        gameWindow
     ]
+
     var renderCallbacks = [
-        hud.Render,
-        gameWindow.Render
+        hud,
+        gameWindow
     ]
 
     Update = function()
     {
         inputs.TickInputs()
 
-        gameWindow.Update( inputs );
+        updateCallbacks.forEach( ucb => ucb.Update( inputs ) );
 
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
         
-        hud.Render( renderer );
-        gameWindow.Render( renderer );
+        renderCallbacks.forEach( rcb => rcb.Render( renderer ) )
         
         frameSync.Invoke( this.Update );
-
-        // i dont why but non of this works, i need anwsers!
-        //updateCallbacks.forEach( cb => { cb( inputs )} )
-        //for ( var i = 0; i < updateCallbacks.length; i++)
-        //    updateCallbacks[i]( inputs );
-        //for ( var i = 0; i < renderCallbacks.length; i++)
-        //    renderCallbacks[i]( renderer );
 
     }
 
@@ -83,15 +76,12 @@ main = function(canvasId, fps = 30){
         switch( state )
         {
             case "lose":
-                
             break;
             case "win":
-
             break;
             case "new":
             break;
             case "start":
-                
             break;
         }
     }
@@ -111,7 +101,7 @@ main = function(canvasId, fps = 30){
     gameManager.stateChangeCallback.push( this.GameStateChanged );
     inputs.mousePressedCallback.push( this.MousePressed );
     frameSync.Invoke( this.Update );
-    gameManager.NewGame(220, {x: 40, y: 20});
+    gameManager.NewGame(220, {x: 60, y: 30});
 
 }
 
