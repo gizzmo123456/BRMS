@@ -38,7 +38,11 @@ class FrameSync
         var syncTime = this.GetSyncTime();
         this.lastFrame = this.NextFrame();
         
-        if ( syncTime < 0 ) syncTime = 0;
+        if ( syncTime < 0 )
+        {
+            this.Invoke( funct );   // if the frame was missed skip it.
+            return;
+        }
 
         this.timerHandle = setTimeout( funct, syncTime );
 
