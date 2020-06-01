@@ -15,8 +15,8 @@ main = function(canvasId, fps = 30){
     // Set up and config
 
     var canvasSettings = {
-        canvasWidth: window.innerWidth - 15,
-        canvasHeight: window.innerHeight - 100,
+        canvasWidth: 0,
+        canvasHeight: 0,
         pixelsToUnits: 25,
         GetPixels: function(units){
             return {
@@ -34,9 +34,6 @@ main = function(canvasId, fps = 30){
 
     var cav = document.getElementById( canvasId );
     var ctx = cav.getContext("2d");
-
-    cav.width = canvasSettings.canvasWidth;
-    cav.height = canvasSettings.canvasHeight;
 
     // set up the main game compoents
     var debug = new Debug(); 
@@ -119,6 +116,16 @@ main = function(canvasId, fps = 30){
         gameWindow.MousePressed( pressed, button );
     }
 
+    ResizeWindow = function()
+    {
+        
+        canvasSettings.canvasWidth = window.innerWidth - 20;
+        canvasSettings.canvasHeight = window.innerHeight - 100;
+
+        cav.width = canvasSettings.canvasWidth;
+        cav.height = canvasSettings.canvasHeight;
+    }
+
     ClearUpdate = function()
     {
 
@@ -126,9 +133,14 @@ main = function(canvasId, fps = 30){
 
     }
 
+    // register callbacks
+    inputs.resizeCallbacks.push( this.ResizeWindow );
     gameManager.stateChangeCallback.push( this.GameStateChanged );
     inputs.mousePressedCallback.push( this.MousePressed );
+
+    this.ResizeWindow();
     frameSync.Invoke( this.Update );
+
     gameManager.NewGame(220, {x: 60, y: 30});
 
 }

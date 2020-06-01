@@ -5,6 +5,8 @@ class Input
     {
         this.mouseDown = false;
         this.mousePressedCallback = []  // function must have param bool down, int button id
+        this.resizeCallbacks = []
+        
 
         // mouse positions in pixels
         this.currentMousePosition = { x: 0, y: 0 };
@@ -15,6 +17,8 @@ class Input
         canvas.addEventListener("mousedown", (e) => { this.__TriggerMouseDownCallback(e, true);    } );
         canvas.addEventListener("mouseup",   (e) => { this.__TriggerMouseDownCallback(e, false);   } );
         canvas.addEventListener("mouseout",  (e) => { this.__TriggerMouseDownCallback(e, false, true);   } );
+
+        window.addEventListener("resize",    ( ) => { this.__TriggerReize(); })
     }
 
     TickInputs()
@@ -45,6 +49,12 @@ class Input
         for ( var i = 0; i < this.mousePressedCallback.length; i++ )
             this.mousePressedCallback[i]( down, button );
 
+    }
+
+    __TriggerReize()
+    {
+        for ( var i = 0; i < this.resizeCallbacks.length; i++ )
+        this.resizeCallbacks[i]( );
     }
 
     GetMousePosition()

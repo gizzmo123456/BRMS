@@ -25,7 +25,7 @@ class FrameSync
         return this.NextFrame() - Date.now();
     }
 
-    Invoke( funct )
+    Invoke( funct ) // TODO: improve the accracy.
     {
 
         if (this.lastFrame == 0)
