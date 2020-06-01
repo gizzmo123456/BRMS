@@ -65,7 +65,7 @@ class Transform extends Rect{
         this.rotation = deg;
     }
 
-    Update( inputs )
+    Update( timeDeltaSeconds, inputs )
     { }
 
     Render( canvasRenderer )
@@ -129,7 +129,7 @@ class Transform extends Rect{
             x: x,
             y: y
         }
-        
+
     }
 
     static DegToRad(deg)
