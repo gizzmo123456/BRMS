@@ -26,7 +26,7 @@ class GameWindow extends Transform
 
     }
 
-    DrawObject( renderer )
+    DrawObject( renderer )  // This needs performance improvments!
     {
 
         var levelRect = new Rect(0, 0, this.gameManager.mapSize.x, this.gameManager.mapSize.y);
@@ -43,8 +43,6 @@ class GameWindow extends Transform
             
             var cellRect = new Rect(cords.x, cords.y, 1, 1);
             var cellColor = "rgb(180, 180, 180)";
-
-            document.getElementById("debug2").innerHTML = "Mouse Current Cell X: "+ this.mouseCurrentCell.x +" Y: "+ this.mouseCurrentCell.y ;
 
             if ( cellRect.contains( this.mouseCurrentCell ) )
                 cellColor = "rgb(220, 220, 220)";
@@ -71,7 +69,7 @@ class GameWindow extends Transform
                 b = Math.floor(255 - (255 * minePrecentage));
                 
                 color = `rgb(${r}, ${g}, ${b})`; 
-                document.getElementById("debug5").innerHTML = mineCount +" / "+ maxMineCount +" = "+ minePrecentage +" || "+ color;
+
                 if ( mineCount < 0 ) mineCount = "*";
                 renderer.DrawText( cellRect, mineCount, color, "18px");
 
