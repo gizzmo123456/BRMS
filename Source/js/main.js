@@ -1,7 +1,7 @@
 // main.js
 
 
-main = function(canvasId, fps = 30){  
+main = function(canvasId, fps = 60){  
     /**
      * App Entry point
      * 
@@ -45,7 +45,7 @@ main = function(canvasId, fps = 30){
     // setup game objects
     var hud = new HUD( 1, 0, 1, 1, 0, gameManager);
     var gameWindow = new GameWindow(1, 2, 1, 1, 0, gameManager, canvasSettings, inputs);
-    var charactor = new Charactor( 2, 3, 1, 1, 0);
+    var charactor = new Charactor( 2, 3, 1, 1, 0, canvasSettings);
 
     // TODO: Add Time Class
     var lastUpdateTime = 0;
@@ -56,7 +56,8 @@ main = function(canvasId, fps = 30){
 
     // update lists
     var updateCallbacks = [
-        gameWindow
+        gameWindow,
+        charactor
     ]
 
     var renderCallbacks = [
@@ -124,7 +125,7 @@ main = function(canvasId, fps = 30){
     {
         
         canvasSettings.canvasWidth = window.innerWidth - 20;
-        canvasSettings.canvasHeight = window.innerHeight - 100;
+        canvasSettings.canvasHeight = window.innerHeight - 200;
 
         cav.width = canvasSettings.canvasWidth;
         cav.height = canvasSettings.canvasHeight;

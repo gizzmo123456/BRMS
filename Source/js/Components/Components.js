@@ -38,7 +38,7 @@ class Transform extends Rect{
         super(posX, posY, scaleX, scaleY);
 
         this.rotation = rotation;
-
+        this.renderOffset = {x: 0, y: 0}
     }
 
     SetTransform(posX, posY, scaleX, scaleY, rotation)
@@ -80,12 +80,17 @@ class Transform extends Rect{
             return;
 
         var position = canvasRenderer.canvasSettings.GetPixels( this.position );
+        var offset = canvasRenderer.canvasSettings.GetPixels( this.renderOffset );
+        var renderPosition = { 
+            x: offset.x + position.x,
+            y: offset.y + position.y,
+        }
         
         // TODO:
         // we need to do the whole sin coz thing here :)
         // See. https://www.w3resource.com/html5-canvas/html5-canvas-matrix-transforms.php
         // Example one.
-        canvasRenderer.canvas.setTransform( this.scale.x, 0, 0, this.scale.y, position.x, position.y );
+        canvasRenderer.canvas.setTransform( this.scale.x, 0, 0, this.scale.y, renderPosition.x, renderPosition.y );
 
         if (this.rotation != 0)
             canvasRenderer.canvas.rotate( Transform.DegToRad( this.rotation ) );
@@ -122,8 +127,8 @@ class Transform extends Rect{
     ToLocalCell( position )
     {
         // Todo. make the max value available so we can clamp it! 
-        x = Math.min( 0, Math.floor(position.x - this.position.x) );
-        y = Math.min( 0, Math.floor(position.y - this.position.y) );
+        var x = Math.min( 0, Math.ceil(position.x - this.position.x) );
+        var y = Math.min( 0, Math.ceil(position.y - this.position.y) );
 
         return {
             x: x,

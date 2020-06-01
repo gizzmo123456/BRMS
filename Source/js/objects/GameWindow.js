@@ -23,6 +23,7 @@ class GameWindow extends Transform
     {
 
         this.mouseCurrentCell = this.ToLocal( this.canvasSettings.GetUnits( inputs.GetMousePosition(), true ) );
+        Debug.Print("moveVEctora",  " x " +this.mouseCurrentCell.x +" y "+this.mouseCurrentCell.y)
 
     }
 

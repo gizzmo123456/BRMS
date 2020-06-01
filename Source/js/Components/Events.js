@@ -44,7 +44,7 @@ class Input
     __TriggerMouseDownCallback( e, down, out )
     {
 
-        var position = { x: e.offsetX, y: e.offsetY };
+        var position = this.currentMousePosition;
         var button = out ? -1 : e.button;
         this.mouseDown = down;
 
