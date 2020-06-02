@@ -8,6 +8,7 @@
         <script src="Source/js/Components/CanvasRenderer.js"></script>
         <script src="Source/js/Components/Game.js"></script>
         <script src="Source/js/Components/Events.js"></script>
+        <script src="Source/js/Components/PathFinder.js"></script>
         <script src="Source/js/objects/HUD.js"></script>
         <script src="Source/js/objects/GameWindow.js"></script>
         <script src="Source/js/objects/Charactor.js"></script>
@@ -15,6 +16,9 @@
     </head>
     <body>
         <canvas id="gameWindow" oncontextmenu="return false" ></canvas>
+
+        <input type="checkbox" id="PathFind" />
+
         <div id="debug"></div>
         <script>
             main("gameWindow")

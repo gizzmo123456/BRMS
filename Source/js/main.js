@@ -66,6 +66,11 @@ main = function(canvasId, fps = 60){
         charactor
     ]
 
+    // TEMP
+    var findPath = document.getElementById("PathFind");
+    var pathFinder = new PathFinder( gameManager );
+    var path = [];
+
     Update = function()
     {
 
@@ -81,6 +86,23 @@ main = function(canvasId, fps = 60){
         ctx.clearRect(0, 0, cav.width, cav.height);    // clear the canvas 
         
         renderCallbacks.forEach( rcb => rcb.Render( renderer ) )
+
+        if ( path.length > 0 )
+        {
+            ctx.setTransform( 1, 0, 0, 1, 0, 0 )
+            var start = path[0];
+            var end;
+
+            // draw path :)
+            for (var p = 1; p < path.length; p++)
+            {
+                end = path[p];
+
+                renderer.DrawLine(start, end, "blue", 2);
+
+                start = end;
+            }
+        }
 
         frameSync.Invoke( this.Update );
 
@@ -119,6 +141,25 @@ main = function(canvasId, fps = 60){
     {
         gameWindow.MousePressed( pressed, button, position );
         charactor.MousePressed( pressed, button, position );
+
+        // TEMP
+        if ( findPath.checked == true && button == 0 && pressed)
+        {
+            var endPos = canvasSettings.GetUnits( position, true );
+            //endPos.x -= 1;
+            //endPos.y -= 2;
+
+            path = pathFinder.FindPath( { x:1, y:2 }, endPos );
+
+            for (var i = 0; i < path.length; i++)
+            {
+                path[i].x += 1.5;
+                path[i].y += 2.5;
+            }
+
+            Debug.Print( "HasPath: ", "Has Path? " + (path.length > 0) )
+
+        }
     }
 
     ResizeWindow = function()
@@ -146,7 +187,7 @@ main = function(canvasId, fps = 60){
     this.ResizeWindow();
     frameSync.Invoke( this.Update );
 
-    gameManager.NewGame(220, {x: 60, y: 30});
+    gameManager.NewGame(20, {x: 35, y: 15});
 
 }
 
