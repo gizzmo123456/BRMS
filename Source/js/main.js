@@ -45,7 +45,7 @@ main = function(canvasId, fps = 60){
     // setup game objects
     var hud = new HUD( 1, 0, 1, 1, 0, gameManager);
     var gameWindow = new GameWindow(1, 2, 1, 1, 0, gameManager, canvasSettings, inputs);
-    var charactor = new Charactor( 2, 3, 1, 1, 0, canvasSettings);
+    var charactor = new Charactor( 2, 3, 1, 1, 0, canvasSettings, gameManager);
 
     // TODO: Add Time Class
     var lastUpdateTime = 0;
@@ -66,11 +66,6 @@ main = function(canvasId, fps = 60){
         charactor
     ]
 
-    // TEMP
-    var findPath = document.getElementById("PathFind");
-    var pathFinder = new PathFinder( gameManager );
-    var path = [];
-
     Update = function()
     {
 
@@ -87,16 +82,16 @@ main = function(canvasId, fps = 60){
         
         renderCallbacks.forEach( rcb => rcb.Render( renderer ) )
 
-        if ( path.length > 0 )
+        if ( charactor.path.length > 0 )
         {
             ctx.setTransform( 1, 0, 0, 1, 0, 0 )
-            var start = path[0];
+            var start = charactor.path[0];
             var end;
 
             // draw path :)
-            for (var p = 1; p < path.length; p++)
+            for (var p = 1; p < charactor.path.length; p++)
             {
-                end = path[p];
+                end = charactor.path[p];
 
                 renderer.DrawLine(start, end, "blue", 2);
 
@@ -140,26 +135,7 @@ main = function(canvasId, fps = 60){
     MousePressed = function( pressed, button, position )
     {
         gameWindow.MousePressed( pressed, button, position );
-        charactor.MousePressed( pressed, button, position );
-
-        // TEMP
-        if ( findPath.checked == true && button == 0 && pressed)
-        {
-            var endPos = canvasSettings.GetUnits( position, true );
-            //endPos.x -= 1;
-            //endPos.y -= 2;
-
-            path = pathFinder.FindPath( { x:1, y:2 }, endPos );
-
-            for (var i = 0; i < path.length; i++)
-            {
-                path[i].x += 1.5;
-                path[i].y += 2.5;
-            }
-
-            Debug.Print( "HasPath: ", "Has Path? " + (path.length > 0) +" len "+ path.length)
-
-        }
+        charactor.MousePressed( pressed, button, position );        
     }
 
     ResizeWindow = function()

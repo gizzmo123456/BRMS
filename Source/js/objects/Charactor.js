@@ -1,7 +1,7 @@
 
 class Charactor extends Transform
 {
-    constructor(posX, posY, scaleX, scaleY, rotation, canvasSettings)
+    constructor(posX, posY, scaleX, scaleY, rotation, canvasSettings, gameManager)
     {
         /**
          *  Params:
@@ -12,22 +12,24 @@ class Charactor extends Transform
         
         super(posX, posY, scaleX, scaleY, rotation);
         this.renderOffset = {x: -0.5, y: -0.5};
+        this.gameManager = gameManager
         this.canvasSettings = canvasSettings;
-
-        this.moveToLocation = {x: 0, y: 0}
-        this.isMoving = false;
 
         this.moveSpeed = 1;     // units a second
         this.rotateSpeed = 90;  // units a second
+
+        this.pathFinder = new PathFinder( gameManager );
+        this.path = [];
+
     }
 
     Update( deltaTime, inputs )
     { 
-        if ( !this.isMoving ) return;
+        if ( this.path.length == 0 ) return;
 
         var moveVector = { 
-            x: this.moveToLocation.x - this.position.x,
-            y: this.moveToLocation.y - this.position.y
+            x: this.path[0].x - this.position.x,
+            y: this.path[0].y - this.position.y
         }
         //var mvSum = Math.abs(moveVector.x + moveVector.y);
         var mag = Math.sqrt( ( moveVector.x * moveVector.x ) + (moveVector.y * moveVector.y) );
@@ -36,8 +38,8 @@ class Charactor extends Transform
         var rotation = Math.min(targetRotAmount, (targetRotAmount > 0 ? this.rotateSpeed : (targetRotAmount < 0 ? -this.rotateSpeed : 0))) * deltaTime;
 
         moveVector = { 
-            x: (this.moveToLocation.x - this.position.x) / mag,
-            y: (this.moveToLocation.y - this.position.y) / mag
+            x: (this.path[0].x - this.position.x) / mag,
+            y: (this.path[0].y - this.position.y) / mag
         }
 
         this.position.x += moveVector.x * this.moveSpeed * deltaTime;
@@ -46,9 +48,9 @@ class Charactor extends Transform
 
         if (mag < 0.05)
         {
-            this.isMoving = false;
-            this.position.x = this.moveToLocation.x;
-            this.position.y = this.moveToLocation.y;
+            this.position.x = this.path[0].x;
+            this.position.y = this.path[0].y;
+            this.path.shift();
         }
     }
 
@@ -70,11 +72,18 @@ class Charactor extends Transform
 
         if ( button == 0 )
         {
-            var pos = this.canvasSettings.GetUnits(position);
-            this.moveToLocation.x = Math.ceil(pos.x);
-            this.moveToLocation.y = Math.ceil(pos.y);
-            Debug.Print("MT", "mt x: "+this.moveToLocation.x+" y: "+this.moveToLocation.y);
-            this.isMoving = true;
+            
+            var endPos = this.canvasSettings.GetUnits( position, true );
+            this.path = this.pathFinder.FindPath( { x: Math.floor(this.position.x), y:Math.floor(this.position.y) }, endPos );
+
+            for (var i = 0; i < path.length; i++)
+            {
+                this.path[i].x += 1;
+                this.path[i].y += 2;
+            }
+    
+            Debug.Print( "HasPath: ", "Has Path? " + (path.length > 0) +" len "+ path.length)
+    
         }
 
     }
