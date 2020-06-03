@@ -10,7 +10,7 @@ class Debug
         this.debugsElements = { };
     }
 
-    static Print(id, message)
+    static Print(id, message, add=false)
     {
         var elem;
 
@@ -26,7 +26,16 @@ class Debug
             elem = Debug.inst.debugsElements[id];
         }
 
-        elem.innerHTML = message
+        if ( add )
+            elem.innerHTML += "<br />" + message;
+        else
+            elem.innerHTML = message
     }
 
+    static Clear( id )
+    {
+        if ( id in Debug.inst.debugsElements )
+            Debug.inst.debugsElements[id].innerHTML = "";
+        
+    }
 }
