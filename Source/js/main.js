@@ -157,7 +157,7 @@ main = function(canvasId, fps = 60){
                 path[i].y += 2.5;
             }
 
-            Debug.Print( "HasPath: ", "Has Path? " + (path.length > 0) )
+            Debug.Print( "HasPath: ", "Has Path? " + (path.length > 0) +" len "+ path.length)
 
         }
     }

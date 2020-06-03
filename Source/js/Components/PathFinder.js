@@ -51,6 +51,7 @@ class PathFinder // TODO: Sometimes it fails to find a path, Fix it.
 
     FindPath( startPosition, endPosition )
     {
+
         // TODO: i really need to do somthink about this offset.
         var startPos = {
             x: startPosition.x - 1,
@@ -123,14 +124,14 @@ class PathFinder // TODO: Sometimes it fails to find a path, Fix it.
                     {
                         Debug.Print( "Ship", "Not in Open" );
 
-                        //if (adjBestId == i) bestId = this.open.length;
+                        //if (adjBestId == i) bestId = this.open.length;  // this makes it a little faster but its also less accurate
                         this.open.push( adjacentCells[i] );
                     }
                     else{
 
                         Debug.Print( "Ship", "In open" );
 
-                        //if (adjBestId == i) bestId = openIndex;
+                        //if (adjBestId == i) bestId = openIndex;        // this makes it a little faster but its also less accurate
                         if ( adjacentCells[i].CompareScore( this.open[ openIndex ] ) )
                             this.open[ openIndex ] = adjacentCells[i]
 
@@ -151,19 +152,59 @@ class PathFinder // TODO: Sometimes it fails to find a path, Fix it.
         if ( !foundEnd )
         {
             Debug.Print("end", "Failed To Find End! ( opn: "+ this.open.length+" cl: "+ this.closed.length +")")
-            return []; // TODO: return the path with the lowest est.
+            var lowestEst = 0;
+            var estId = -1;
+
+            // find the cloest node.
+            for ( var i = 0; i < this.closed.length; i++)
+            {
+                var est = this.closed[i].estimate;
+                if ( estId == -1 || est < lowestEst)
+                {
+                    lowestEst = est
+                    estId = i;
+                }
+            }
+
+            Debug.Print("endest", `End Est Id ${estId}`);
+            if (estId == -1) return [];
+
+            this.currentNode = this.closed[estId];
+
         }
 
+        // Compile the list of cords down, 
+        // so we only have the points when it changes direction
         var path = [];
-
         var p = 0;
+
+        var lastDirection = { x: 0, y: 0 }
+        var lastNode = this.currentNode;
+
+        path.push( this.currentNode.position ); // add the end point
+
+        this.currentNode = lastNode.parent;
+        
         while ( this.currentNode.parent )
         {
-            path.push( this.currentNode.position );
+            var difX = this.currentNode.position.x - lastNode.position.x;
+            var difY = this.currentNode.position.y - lastNode.position.y;
+            
+            var currentDirection = {
+                x:  difX == 0 ? 0 : ( difX > 0 ? 1 : -1),
+                y:  difY == 0 ? 0 : ( difY > 0 ? 1 : -1)
+            };
+
+            if ( lastDirection.x != currentDirection.x && lastDirection.y != currentDirection.y)
+                path.push( lastNode.position );     // add the points inbetween
+
+            lastNode = this.currentNode;
+            lastDirection = currentDirection;
             this.currentNode = this.currentNode.parent;
             Debug.Print( "bob", "fff " + (p++) );
-
         }
+
+        path.push( this.currentNode.position ); // add the start point
 
         path.reverse();
         return path;
@@ -195,9 +236,12 @@ class PathFinder // TODO: Sometimes it fails to find a path, Fix it.
 
             if ( cellId > -1 && !this.gameManager.cover[ cellId ] )
             {
+                var cellCost = 1;
+                ///** this is slow AF, TODO: ill see if i can make it async :) 
                 var cellCost = this.gameManager.map[ cellId ] + 1;
-                if ( cellId == 0 ) // Mine. avoid
+                if ( cellCost == 0 ) // Mine. avoid
                     cellCost = 1000;
+                //*/
 
                 var est = this.GetEstimate(adjCellPositions[i], endPosition)
                 var adjCell = new PathNode(parent, adjCellPositions[i], est, cellCost) ;
