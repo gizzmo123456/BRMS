@@ -187,7 +187,7 @@ main = function(canvasId, fps = 60){
     this.ResizeWindow();
     frameSync.Invoke( this.Update );
 
-    gameManager.NewGame(20, {x: 35, y: 15});
+    gameManager.NewGame(80, {x: 30, y: 18});
 
 }
 

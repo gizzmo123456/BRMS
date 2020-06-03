@@ -6,7 +6,7 @@ function PathNode(parent=null, position={x: 0, y: 0}, estimate=999, cellCost = 1
     this.position = position;
 
     this.cellCost = cellCost;
-    this.pathCost = parent ? parent.f + this.cellCost : 0           // g
+    this.pathCost = parent ? parent.GetScore() + this.cellCost : 0           // g
     this.estimate = estimate;                                       // h
 
     this.GetScore = function()  // f = g + h
@@ -36,7 +36,7 @@ function PathNode(parent=null, position={x: 0, y: 0}, estimate=999, cellCost = 1
 
 }
 
-class PathFinder
+class PathFinder // TODO: Sometimes it fails to find a path, Fix it. 
 {
     constructor( gameManager )
     {
@@ -62,54 +62,20 @@ class PathFinder
             y: endPosition.y - 2
         }
 
-        this.open = [];
+        this.open = [ new PathNode(null, startPos, this.GetEstimate( startPos, endPos)) ];
         this.closed = [];
-        this.currentNode = new PathNode(null, startPos);
+        this.currentNode = null;
         var foundEnd = false;
 
-        do{
+        var bestId = -1;
+        var bestScore = 0;
 
-            var adjacentCellsData = this.GetAdjacentCells( this.currentNode, endPos);
-            var adjacentCells = adjacentCellsData.items;
+        while( this.open.length > 0 )
+        {
 
-            var bestId = adjacentCellsData.best;
-            var bestScore = 0;
+            bestScore = 0;
 
-            // add the current cell the the closed list.
-            this.closed.push( this.currentNode );
-
-
-            // add the addjacent cells to the open list accordingly.
-            // if its in the closed list ignore it.
-            // if its not in the open list add it
-            // otherwise if its in the open list, re-caculate its score and switch to it if it is better then the current, updateing the parent ect....
-
-            for ( var i = 0; i < adjacentCells.length; i++ )
-            { 
-                
-                if ( this.closed.findIndex( (elem) => elem.Compare( adjacentCells[i] ) ) > -1)
-                {
-                    if (bestId == i) bestId = -1;
-                    continue;
-                }
-                else
-                {
-                    var openIndex = this.open.findIndex( (elem) => elem.Compare( adjacentCells[i] ) );
-
-                    if ( openIndex == -1 )
-                    {
-                        if (bestId == i) bestId = this.open.length;
-                        this.open.push( adjacentCells[i] );
-                    }
-                    else if ( adjacentCells[i].CompareScore( this.open[ openIndex ] ) )
-                    {
-                        if (bestId == i) bestId = openIndex;
-                        this.open[ openIndex ] = adjacentCells[i]
-                    }
-                }
-            }
-
-            // set the current to the best est and remove it form the list of items
+            // Find the node with the best estimate
             if ( bestId == -1 )
             {
                 // find the next best
@@ -124,9 +90,54 @@ class PathFinder
                 }
             }
 
+            // set the best to the current node, removing it from the open list and moving it into the closed list.
             this.currentNode = this.open[ bestId ];
-
             this.open.splice( bestId, 1 );
+            this.closed.push( this.currentNode );
+
+            // Get the adjacent cells of the current node
+            var adjacentCellsData = this.GetAdjacentCells( this.currentNode, endPos);
+            var adjacentCells = adjacentCellsData.items;
+
+            var adjBestId = adjacentCellsData.best;
+            bestId = -1;
+
+            // add the addjacent cells to the open list accordingly.
+            // if its in the closed list ignore it.
+            // if its not in the open list add it
+            // otherwise if its in the open list, re-caculate its score and switch to it if it is better then the current, updateing the parent ect....
+
+            for ( var i = 0; i < adjacentCells.length; i++ )
+            { 
+                
+                if ( this.closed.findIndex( (elem) => elem.Compare( adjacentCells[i] ) ) > -1)
+                {
+                    Debug.Print( "Ship", "Skip in closed! " + this.currentNode.position.x +", "+ this.currentNode.position.y );
+                    continue;
+                }
+                else
+                {
+                    var openIndex = this.open.findIndex( (elem) => elem.Compare( adjacentCells[i] ) );
+
+                    if ( openIndex == -1 )
+                    {
+                        Debug.Print( "Ship", "Not in Open" );
+
+                        //if (adjBestId == i) bestId = this.open.length;
+                        this.open.push( adjacentCells[i] );
+                    }
+                    else{
+
+                        Debug.Print( "Ship", "In open" );
+
+                        //if (adjBestId == i) bestId = openIndex;
+                        if ( adjacentCells[i].CompareScore( this.open[ openIndex ] ) )
+                            this.open[ openIndex ] = adjacentCells[i]
+
+                    }
+                    
+                }
+            }
 
             if ( this.currentNode.position.x == endPos.x && this.currentNode.position.y == endPos.y )
             {
@@ -135,13 +146,14 @@ class PathFinder
                 break;  // we have the end
             }
 
-        }while( this.open.length > 0 );
+        }
 
         if ( !foundEnd )
         {
-            Debug.Print("end", "Failed To Find End!")
+            Debug.Print("end", "Failed To Find End! ( opn: "+ this.open.length+" cl: "+ this.closed.length +")")
             return []; // TODO: return the path with the lowest est.
         }
+
         var path = [];
 
         var p = 0;
@@ -165,15 +177,15 @@ class PathFinder
         var mapSize = this.gameManager.mapSize;
         var adjacentCells = []
         
-        var bestEst = 0
+        var bestScore = 0
         var bestId = -1   // -1 == None Found.
 
         // get the four adjacent cells
         var adjCellPositions = [ 
-            {x: position.x - 1, y: position.y}, // left
-            {x: position.x + 1, y: position.y}, // right
             {x: position.x, y: position.y - 1}, // up
+            {x: position.x + 1, y: position.y}, // right
             {x: position.x, y: position.y + 1}, // down
+            {x: position.x - 1, y: position.y}, // left
         ]
 
         for ( var i = 0; i < adjCellPositions.length; i++ )
@@ -183,16 +195,20 @@ class PathFinder
 
             if ( cellId > -1 && !this.gameManager.cover[ cellId ] )
             {
+                var cellCost = this.gameManager.map[ cellId ] + 1;
+                if ( cellId == 0 ) // Mine. avoid
+                    cellCost = 1000;
 
                 var est = this.GetEstimate(adjCellPositions[i], endPosition)
+                var adjCell = new PathNode(parent, adjCellPositions[i], est, cellCost) ;
+                var score = adjCell.GetScore();
 
-                if ( bestId == -1 || est < bestEst)
+                if ( bestId == -1 || score < bestScore)
                 {
-                    bestEst = est;
+                    bestScore = score;
                     bestId = adjacentCells.length;
                 }
 
-                var adjCell = new PathNode(parent, adjCellPositions[i], est, 1) ;
                 adjacentCells.push( adjCell );
                 
             }
